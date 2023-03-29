@@ -5,10 +5,10 @@ var cors = require("cors");
 
 dotenv.config();
 
-app.use(cors());
-
 const port = process.env.PORT || 5000;
 const app = express();
+
+app.use(cors());
 
 app.use("/api/expenses", expensesRoute);
 
