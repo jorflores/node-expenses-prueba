@@ -1,5 +1,6 @@
 const express = require("express");
 var request = require("request");
+var axios = require("axios");
 
 const router = express.Router();
 
@@ -20,6 +21,50 @@ router.get("/getToken", async (req, res) => {
     //console.log("Access token: " + accessToken);
     res.json({ token: accessToken });
   });
+});
+
+router.get("/getUsers", async (req, res) => {
+  const response = await axios.get(
+    `${process.env.API_URL}/api/management/getToken`
+  );
+  const token = response.data.token;
+
+  const options = {
+    method: "GET",
+    url: "https://nagarrotest.us.auth0.com/api/v2/users",
+    headers: { authorization: "Bearer " + token },
+  };
+
+  axios(options)
+    .then((response) => {
+      console.log(response.data);
+      res.json(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+router.get("/getRoles", async (req, res) => {
+  const response = await axios.get(
+    `${process.env.API_URL}/api/management/getToken`
+  );
+  const token = response.data.token;
+
+  const options = {
+    method: "GET",
+    url: "https://nagarrotest.us.auth0.com/api/v2/roles",
+    headers: { authorization: "Bearer " + token },
+  };
+
+  axios(options)
+    .then((response) => {
+      console.log(response.data);
+      res.json(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 module.exports = router;
